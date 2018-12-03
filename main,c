@@ -1,0 +1,68 @@
+#include <stdio.h>
+#pragma warning(disable:4996)
+int stringSearch(char s[], char t[], int  pos[]);
+int strCompare(char *s, char* t);
+int strSearch(char *s, char *t);
+int stringLength(char *s);
+int main()
+{
+	char str1[100], str2[100];
+	int pos[10];
+	int n, i;
+	while (scanf("%s%s",str1,str2)==2)
+	{
+		n = stringSearch(str1, str2, pos);
+		printf("見つかった個数:%d\n", n);
+		for (i = 0; i < n; i++)
+		{
+			printf(" %d文字目", pos[i]);
+		}
+		printf("\n");
+	}
+
+	return 0;
+}
+
+int stringSearch(char s[], char t[], int  pos[])
+{
+	int index, n, tlen, i;
+
+	tlen = stringLength(t);
+	index = 0;
+	i = 0;
+	while (((n = strSearch(&s[index], t)) >= 0)) {
+		pos[i] = index + n;
+		index = index + n + tlen;
+		i++;
+	}
+	return i;
+}
+
+int strSearch(char *s, char* t)
+{
+	int i;
+	for (i = 0; s[i] && strCompare(&s[i], t); i++)
+		;
+	if (s[i]) return i;
+	return -1;
+}
+
+int strCompare(char *s, char* t)
+{
+	int i;
+	for (i = 0; s[i] == t[i] && s[i] != 0; i++)
+		;
+	if (t[i] == '\0')return 0;
+	return s[i] - t[i];
+}
+
+int stringLength(char *s)
+{
+	int t;
+	t = 0;
+	while (*s++)
+		t++;
+	return t;
+}
+
+//abxxxcdexxxxfgxxx xxx
